@@ -1,0 +1,74 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<br />
+<br />
+<div class="row">
+    <form>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Employee ID</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="emp_id" placeholder="Enter employee id">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Employee name</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="emp_name" placeholder="Employee name">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Employee bonus amount</label>
+            <div class="col-sm-10">
+                <input type="number" class="form-control" id="emp_bonus" placeholder="Employee bonus amount">
+            </div>
+        </div>
+        <a href="#" id="addNewBtn" class="btn btn-primary col-lg-offset-2"><i class="glyphicon glyphicon-plus-sign"></i> Add New</a>
+    </form>
+
+    <br />
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">Employee ID</th>
+                <th scope="col">Employee Name</th>
+                <th scope="col">Employee Bonus Amount</th>
+            </tr>
+        </thead>
+        <tbody id="tbl_list">
+        </tbody>
+    </table>
+    <a href="#" id="autoGenerateBtn" class="btn btn-success col-lg-offset-2"><i class="glyphicon glyphicon-check"></i> Start Auto Generation</a>
+</div>
+
+
+<script>
+
+    $(document).ready(function () {
+        var arrayOfEmp = [];
+        $(document).on("click", "#addNewBtn", function () {
+            var empObj = {
+                EmployeeId: $("#emp_id").val(),
+                EmployeeName: $("#emp_name").val(),
+                EmployeeBonusAmount: $("#emp_bonus").val()
+            };
+            arrayOfEmp.push(empObj);
+            $("#tbl_list").append('<tr><td>' + empObj.EmployeeId + '</td><td>' + empObj.EmployeeName + '</td><td>' + empObj.EmployeeBonusAmount + '</td></tr>');
+        });
+
+
+        $(document).on("click", "#autoGenerateBtn", function () {
+            $.ajax({
+                type: "POST",
+                url: "/Home/SaveData",
+                data: JSON.stringify(arrayOfEmp),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (r) {
+                    alert(r + " record(s) inserted.");
+                }
+            });
+        });
+    });
+</script>
